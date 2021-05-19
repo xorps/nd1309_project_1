@@ -47,7 +47,7 @@ class Block {
      *     or Reject with an error.
      */
     async getBData() {
-        if (self.height === 0) throw new Error('getDBata() called on Genesis Block');
+        if (this.height === 0) throw new Error('getDBata() called on Genesis Block');
         return JSON.parse(hex2ascii(this.body));
     }
 
