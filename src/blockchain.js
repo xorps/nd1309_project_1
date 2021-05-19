@@ -12,6 +12,8 @@ const SHA256 = require('crypto-js/sha256');
 const {Block} = require('./block.js');
 const bitcoinMessage = require('bitcoinjs-message');
 
+const mktimestamp = () => new Date().getTime().toString().slice(0,-3);
+
 class Blockchain {
     /**
      * Constructor of the class, you will need to setup your chain array and the height
@@ -58,7 +60,7 @@ class Blockchain {
      */
     async _addBlock(block) {
         block.height = this.chain.length;
-        block.time = Date.now();
+        block.time = mktimestamp();
         block.previousBlockHash = block.height > 0 ? this.chain[block.height - 1].hash : null;
         block.hash = await block.computeHash();
         this.chain.push(block);
@@ -76,7 +78,7 @@ class Blockchain {
      * @param {*} address 
      */
     async requestMessageOwnershipVerification(address) {
-        const timestamp = Date.now();
+        const timestamp = mktimestamp();
         const message = `${address}:${timestamp}:starRegistry`;
         return {message};
     }
@@ -112,7 +114,7 @@ class Blockchain {
         // make sure message is legit
         if (!bitcoinMessage.verify(message, address, signature)) throw new Error('Message verification failed');
         // make sure its not expired
-        const ellapsed = Date.now() - timestamp;
+        const ellapsed = mktimestamp() - timestamp;
         const FiveMinutes = 5 * 60_000;
         if (ellapsed >= FiveMinutes) throw new Error('Message expired');
         // create new block

@@ -8,6 +8,10 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const initApp = require('../BlockchainController');
 
+process.on('unhandledRejection', err => {
+    fail(err);
+});
+
 async function yield_once() {
     return new Promise((resolve, reject) => {
         setImmediate(() => resolve());
