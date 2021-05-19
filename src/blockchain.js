@@ -115,7 +115,7 @@ class Blockchain {
         if (!bitcoinMessage.verify(message, address, signature)) throw new Error('Message verification failed');
         // make sure its not expired
         const ellapsed = mktimestamp() - timestamp;
-        const FiveMinutes = 5 * 60_000;
+        const FiveMinutes = 5 * 60;
         if (ellapsed >= FiveMinutes) throw new Error('Message expired');
         // create new block
         const block = new Block({owner: address, star});
